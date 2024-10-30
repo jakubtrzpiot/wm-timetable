@@ -8,19 +8,19 @@ Feedback is appreciated!
 ## Features
 
 - **Timetable Screen**: Offers a quick and easy view of your timetable.
-  <img src="timetable_screen.png" alt="Timetable Screen" width="250px"/>
+  <img src="./docs/images/timetable_screen.png" alt="Timetable Screen" width="250px"/>
 
 - **Timetable Selection and Student Groups**: Choose your academic timetable and organize your schedule by adding student groups, making it convenient to track your academic commitments within the Faculty of Mechanical Engineering.
-  <img src="edit_settings.png" alt="Timetable and Student Groups" width="250px"/>
+  <img src="./docs/images/edit_settings.png" alt="Timetable and Student Groups" width="250px"/>
 
 - **Note Management**: Add and store important notes related to your studies, timetable, or any other topic, keeping everything in one place.
-  <img src="note_management.png" alt="Note Management" width="250px"/>
+  <img src="./docs/images/note_management.png" alt="Note Management" width="250px"/>
 
 - **Note Screen**: Access a dedicated note screen where you can view, edit, and organize all your notes effortlessly.
-  <img src="note_screen.png" alt="Note Screen" width="250px"/>
+  <img src="./docs/images/note_screen.png" alt="Note Screen" width="250px"/>
 
 - **Customizable App Color**: Personalize the app's appearance by choosing a color theme that suits your style and preferences.
-  <img src="edit_color.png" alt="Customizable App Color" width="250px"/>
+  <img src="./docs/images/edit_color.png" alt="Customizable App Color" width="250px"/>
 
 - **Data Persistence**: All your timetable data and notes are automatically saved to your device's storage using the AsyncStorage library, ensuring you don't lose your data.
 

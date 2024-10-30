@@ -119,19 +119,19 @@ const App: React.FC = () => {
 export default App;
 
 //BEFORE RELEASE
-//TODO add addNote, removeNote
-//TODO add notes screen
-//TODO add note indicator
-//TODO add current time as a line across the timetable
-//TODO add custom theme for dropdown
-//TODO add animations
-//TODO add better alerts
-//TODO add splash screen instead of loader on initial load
-//TODO get the metarial ui colors
-//TODO add readme
-//TODO maybe add smooth transitions between screens
-//FIXME fix the bug with keyboard not opening when component is too low on the screen
-//TODO scroll to opened card when opening it
-//FIXME language group name not displayed correctly
-// TODO Add mechanic to set first odd week
-// FIXME going into the settings shouldnt refresh the date context
+//TODO [] add addNote, removeNote
+//TODO [x] add notes screen 
+//TODO [x] add note indicator
+//TODO [] add current time as a line across the timetable
+//TODO [x] add custom theme for dropdown
+//TODO [] add animations
+//TODO [] add better alerts
+//TODO [] add splash screen instead of loader on initial load
+//TODO [] get the metarial ui colors
+//TODO [x] add readme
+//TODO [] maybe add smooth transitions between screens
+//TODO [] scroll to opened card when opening it
+//TODO [] Add mechanic to set first odd week
+//FIXME [] fix the bug with keyboard not opening when component is too low on the screen
+//FIXME [] language group name not displayed correctly
+//FIXME [] going into the settings shouldnt refresh the date context
