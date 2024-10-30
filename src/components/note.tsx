@@ -5,7 +5,7 @@ import {
   ViewComponent,
   ButtonComponent,
 } from './core';
-import {Note} from '../interfaces/notes.interfaces';
+import {Note} from '../interfaces/notes.types';
 import {
   TouchableOpacity,
   Modal,
@@ -27,8 +27,6 @@ const NoteCard = ({item, close}: {item: Note; i: number; close: any}) => {
   const [removeModalOpen, setRemoveModalOpen] = useState<boolean>(false);
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
 
- 
-
   const rounded = ['rounded-[20px]', 'rounded-[24px]'];
 
   const handlePick = () => {
@@ -49,7 +47,7 @@ const NoteCard = ({item, close}: {item: Note; i: number; close: any}) => {
 
   const handleEdit = () => {
     setEditModalOpen(true);
-  }
+  };
 
   return (
     <TouchableOpacity
@@ -65,14 +63,14 @@ const NoteCard = ({item, close}: {item: Note; i: number; close: any}) => {
           className="!text-[#121212]">
           {item.content}
         </TextComponent>
-          <IconComponent
-            name="pencil"
-            className="-mt-2.5 -mb-4 px-4"
-            customColor="#121212"
-            center
-            size={20}
-            onPress={() => handleEdit()}
-          />
+        <IconComponent
+          name="pencil"
+          className="-mt-2.5 -mb-4 px-4"
+          customColor="#121212"
+          center
+          size={20}
+          onPress={() => handleEdit()}
+        />
       </ViewComponent>
     </TouchableOpacity>
   );

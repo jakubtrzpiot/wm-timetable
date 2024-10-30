@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {TextComponent, ViewComponent} from '../core';
-import {Time} from '../../interfaces/timetable.interfaces';
+import {Time} from '../../interfaces/timetable.types';
 
 const TimeModule = ({start, end}: Time) => (
   <View className="flex-row mr-2.5 justify-end w-[14%]">

@@ -1,21 +1,24 @@
-export type Timetable = Day[];
-export type Day = Lesson[];
+export type Timetable = {
+  p: Day[];
+  n: Day[];
+};
+export type Day = Period[];
 
-export interface Lesson {
+export type Period = {
   time: Time;
   subject: Subject | Subject[];
-}
+};
 
-export interface Time {
+export type Time = {
   start: string;
   end: string;
-}
+};
 
-export interface Subject {
+export type Subject = {
   name: string;
   type: string;
   group: string;
   week: string;
   teacher: string;
   room: string;
-}
+};

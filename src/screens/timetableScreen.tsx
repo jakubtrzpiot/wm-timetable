@@ -12,7 +12,7 @@ import {
   CardOpenContext,
   TimetableContext,
 } from '../utils/context';
-import {Day} from '../interfaces/timetable.interfaces';
+import {Day} from '../interfaces/timetable.types';
 // import useKeyboardState from '../utils/hooks';
 
 const TimetableScreen = () => {

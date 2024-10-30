@@ -3,7 +3,7 @@ import {Keyboard} from 'react-native';
 import asyncStorage from './asyncStorage';
 import {NotesContext} from './context';
 
-export const useInitialValues = async () => {
+export const useInitialValuesSet = async () => {
   try {
     const course = await asyncStorage.getItem('course');
     const groups = await asyncStorage.getItem('groups');

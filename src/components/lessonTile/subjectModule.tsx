@@ -7,7 +7,7 @@ import {
   PixelRatio,
 } from 'react-native';
 import {IconComponent, TextComponent, ViewComponent} from '../core';
-import {Subject} from '../../interfaces/timetable.interfaces';
+import {Subject} from '../../interfaces/timetable.types';
 import subjectMap from '../../utils/subjectMap';
 import {
   LanguageContext,

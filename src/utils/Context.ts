@@ -1,6 +1,6 @@
 import {createContext, Dispatch, SetStateAction} from 'react';
-import {Timetable} from '../interfaces/timetable.interfaces';
-import {Note, Notes} from '../interfaces/notes.interfaces';
+import {Timetable} from '../interfaces/timetable.types';
+import {Note, Notes} from '../interfaces/notes.types';
 
 export const ThemeContext = createContext('#c5e1f5');
 

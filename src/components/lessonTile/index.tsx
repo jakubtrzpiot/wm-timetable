@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {View} from 'react-native';
-import {Lesson, Subject} from '../../interfaces/timetable.interfaces';
+import {Lesson, Subject} from '../../interfaces/timetable.types';
 import TimeModule from './timeModule';
 import SubjectModule from './subjectModule';
 import RoomModule from './roomModule';

@@ -13,8 +13,8 @@ import {
   NotesContext,
 } from './src/utils/context';
 import asyncStorage from './src/utils/asyncStorage';
-import {Timetable} from './src/interfaces/timetable.interfaces';
-import {Note, Notes} from './src/interfaces/notes.interfaces';
+import {Timetable} from './src/interfaces/timetable.types';
+import {Note, Notes} from './src/interfaces/notes.types';
 
 const App: React.FC = () => {
   const [initialValuesSet, setInitialValuesSet] = useState(false);
@@ -25,64 +25,64 @@ const App: React.FC = () => {
   const [timetable, setTimetable] = useState<Timetable>([]);
   const [notes, setNotes] = useState<Notes>([]);
 
-  const addNote = (note: Note) => {
-    if (!note.content.replace(/\s/g, '').length) return;
-    const newNotes = [...notes];
-    newNotes.push(note);
-    setNotes(newNotes);
-    asyncStorage.setItem('notes', newNotes);
-  };
+  // const addNote = (note: Note) => {
+  //   if (!note.content.replace(/\s/g, '').length) return;
+  //   const newNotes = [...notes];
+  //   newNotes.push(note);
+  //   setNotes(newNotes);
+  //   asyncStorage.setItem('notes', newNotes);
+  // };
 
-  const removeNote = (note: Note) => {
-    const newNotes = [...notes];
-    const index = newNotes.findIndex(
-      n =>
-        n.content === note.content &&
-        n.date.toLocaleDateString() === note.date.toLocaleDateString() &&
-        n.lessonid === note.lessonid,
-    );
-    newNotes.splice(index, 1);
-    setNotes(newNotes);
-    asyncStorage.setItem('notes', newNotes);
-  };
+  // const removeNote = (note: Note) => {
+  //   const newNotes = [...notes];
+  //   const index = newNotes.findIndex(
+  //     n =>
+  //       n.content === note.content &&
+  //       n.date.toLocaleDateString() === note.date.toLocaleDateString() &&
+  //       n.lessonid === note.lessonid,
+  //   );
+  //   newNotes.splice(index, 1);
+  //   setNotes(newNotes);
+  //   asyncStorage.setItem('notes', newNotes);
+  // };
 
-  useEffect(() => {
-    useRefresh();
-    asyncStorage
-      .getItem('timetable')
-      .then(result => result && setTimetable(result));
-    const today = new Date().getTime();
-    asyncStorage
-      .getItem('notes')
-      .then(
-        result =>
-          result &&
-          setNotes(
-            result
-              .map((note: Note) => ({...note, date: new Date(note.date)}))
-              .filter((note: Note) => today - note.date.getTime() < 604800000),
-          ),
-      );
-  }, [initialValuesSet]);
+  // useEffect(() => {
+  //   useRefresh();
+  //   asyncStorage
+  //     .getItem('timetable')
+  //     .then(result => result && setTimetable(result));
+  //   const today = new Date().getTime();
+  //   asyncStorage
+  //     .getItem('notes')
+  //     .then(
+  //       result =>
+  //         result &&
+  //         setNotes(
+  //           result
+  //             .map((note: Note) => ({...note, date: new Date(note.date)}))
+  //             .filter((note: Note) => today - note.date.getTime() < 604800000),
+  //         ),
+  //     );
+  // }, [initialValuesSet]);
 
-  const useRefresh = (item?: 'color' | 'lang' | 'submit' | 'setup') => {
-    if (!item || item === 'lang')
-      asyncStorage
-        .getItem('language')
-        .then(result => result && setLanguage(result));
-    if (!item || item === 'color')
-      asyncStorage.getItem('color').then(result => result && setColor(result));
-    if (!item || item === 'submit')
-      useInitialValues().then(
-        result => (
-          setInitialValuesSet(result), setLoading(false), setSetupOpen(false)
-        ),
-      );
-    if (item === 'setup') setSetupOpen(!setupOpen), setLoading(false);
-  };
+  // const useRefresh = (item?: 'color' | 'lang' | 'submit' | 'setup') => {
+  //   if (!item || item === 'lang')
+  //     asyncStorage
+  //       .getItem('language')
+  //       .then(result => result && setLanguage(result));
+  //   if (!item || item === 'color')
+  //     asyncStorage.getItem('color').then(result => result && setColor(result));
+  //   if (!item || item === 'submit')
+  //     useInitialValues().then(
+  //       result => (
+  //         setInitialValuesSet(result), setLoading(false), setSetupOpen(false)
+  //       ),
+  //     );
+  //   if (item === 'setup') setSetupOpen(!setupOpen), setLoading(false);
+  // };
 
   return (
-    <RefreshContext.Provider value={useRefresh}>
+    // <RefreshContext.Provider value={useRefresh}>
       <LanguageContext.Provider value={language}>
         <ThemeContext.Provider value={color}>
           <View className="flex-1 bg-[#121212]">
@@ -95,9 +95,9 @@ const App: React.FC = () => {
               ) : !setupOpen ? (
                 <GestureHandlerRootView className="flex-1 bg-inherit">
                   <TimetableContext.Provider value={timetable}>
-                    <NotesContext.Provider value={{notes, addNote, removeNote}}>
+                    {/* <NotesContext.Provider value={{notes, addNote, removeNote}}> */}
                       <TimetableScreen />
-                    </NotesContext.Provider>
+                    {/* </NotesContext.Provider> */}
                   </TimetableContext.Provider>
                 </GestureHandlerRootView>
               ) : (
@@ -112,7 +112,7 @@ const App: React.FC = () => {
           </View>
         </ThemeContext.Provider>
       </LanguageContext.Provider>
-    </RefreshContext.Provider>
+    // </RefreshContext.Provider>
   );
 };
 
@@ -120,7 +120,7 @@ export default App;
 
 //BEFORE RELEASE
 //TODO [] add addNote, removeNote
-//TODO [x] add notes screen 
+//TODO [x] add notes screen
 //TODO [x] add note indicator
 //TODO [] add current time as a line across the timetable
 //TODO [x] add custom theme for dropdown

@@ -1,4 +1,4 @@
-import {Lesson, Subject, Timetable} from '../interfaces/timetable.interfaces';
+import {Period, Subject, Timetable} from '../interfaces/timetable.types';
 import asyncStorage from './asyncStorage';
 import {parseTimetable, parseCourseName, parseCourses} from './parser';
 
@@ -102,16 +102,12 @@ export const fetchTimetable = async (refresh: boolean = false) => {
   }
 };
 
-export const fetchCourseName = async (course: number) => {
-  const courseName = await parseCourseName(course);
-  return courseName;
-};
+// export const fetchCourseName = async (course: number) => {
+//   const courseName = await parseCourseName(course);
+//   return courseName;
+// };
 
 export const fetchCourses = async () => {
   const courses = await parseCourses();
-  // const courses = await parseCourses();
-  // return courses
-  //   .filter(course => course.status == 'fulfilled')
-  //   .map(course => course.value);
   return courses;
 };

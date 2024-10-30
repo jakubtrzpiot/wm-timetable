@@ -1,6 +1,6 @@
 import {DOMParser as parser} from 'react-native-html-parser';
 import {WM_URL} from './constants';
-import {Timetable, Subject, Lesson} from '../interfaces/timetable.interfaces';
+import {Timetable, Day, Period, Subject} from '../interfaces/timetable.types';
 import asyncStorage from './asyncStorage';
 
 const transpose = (array: Array<any>) => {
@@ -117,14 +117,14 @@ const stripNullValuesFromEdges = (array: Array<any>) => {
   return array;
 };
 
-const filter = (timetable: Timetable, groups: Array<string>) => {
+const filter = (timetable: Day[], groups: Array<string>): Timetable => {
   // console.log('timetable:', timetable, '\ngroups:', groups);
-  const byWeek = (week: string) =>
+  const byWeek = (week: string): Day[] =>
     timetable.map(
       day =>
         day &&
         stripNullValuesFromEdges(
-          day.map(({time, subject}: Lesson) => ({
+          day.map(({time, subject}: Period) => ({
             time,
             subject:
               (subject as Subject[])?.filter(subject => {
@@ -138,14 +138,50 @@ const filter = (timetable: Timetable, groups: Array<string>) => {
         ),
     );
 
-  const result = [...byWeek('n'), [], [], ...byWeek('p'), [], []];
+  const result = {n: byWeek('n'), p: byWeek('p')}
   // console.log('Filter result', result);
   return result;
 };
 
 export const parseTimetable = async (course: number): Promise<Timetable> => {
   const groups = await asyncStorage.getItem('groups');
-  const do_compact = await asyncStorage.getItem('compact');
+  // const do_compact = await asyncStorage.getItem('compact');
+  // const compact = (timetable: Timetable): Timetable => {
+  //   return timetable.map(day => {
+  //     const compacted: Period[] = [];
+  //     let i = 0;
+  //     while (i < day.length) {
+  //       const lesson = day[i];
+  //       if (lesson.subject) {
+  //         let j = i + 1;
+  //         while (
+  //           j < day.length &&
+  //           //@ts-expect-error
+  //           day[j]?.subject?.name === lesson.subject.name &&
+  //           //@ts-expect-error
+  //           day[j]?.subject?.type === lesson.subject.type &&
+  //           j - i < 3
+  //         ) {
+  //           j++;
+  //         }
+  //         compacted.push({
+  //           time: {
+  //             start: lesson.time.start,
+  //             end: day[j - 1].time.end,
+  //           },
+  //           subject: lesson.subject,
+  //         });
+  //         i = j;
+  //       } else {
+  //         compacted.push(lesson);
+  //         i++;
+  //       }
+  //     }
+  //     return compacted.filter(lesson => lesson.subject);
+  //   });
+  // };
+
+  // const res = true ? compact(timetable) : timetable; // do_compact
   return await fetch(`${WM_URL}/plany/o${course}.html`)
     .then(res => {
       if (!res.ok) {
@@ -181,77 +217,40 @@ export const parseTimetable = async (course: number): Promise<Timetable> => {
         });
       });
 
-      interface LessonProps {
-        dayIndex: number;
-        lessonIndex: number | number[];
-        subject: {
-          name: string;
-          group?: string;
-          week?: string;
-          type?: string;
-          teacher?: string;
-          room?: string;
-        };
-      }
+      // type PeriodProps = {
+      //   dayIndex: number;
+      //   lessonIndex: number | number[];
+      //   subject: {
+      //     name: string;
+      //     group?: string;
+      //     week?: string;
+      //     type?: string;
+      //     teacher?: string;
+      //     room?: string;
+      //   };
+      // }
 
-      const insertLessons = ({lessonIndex, dayIndex, subject}: LessonProps) => {
-        for (let idx of lessonIndex as number[]) {
-          timetable[dayIndex][idx].subject.push(subject);
-        }
-      };
-      const deleteLessons = ({lessonIndex, dayIndex, subject}: LessonProps) => {
-        for (let idx of lessonIndex as number[]) {
-          let subjectIndex = 0;
-          while (subjectIndex > -1) {
-            subjectIndex = timetable[dayIndex][idx].subject
-              .slice(subjectIndex)
-              .findIndex((s: Subject) => s.name === subject.name);
+      // const insertPeriods = ({lessonIndex, dayIndex, subject}: PeriodProps) => {
+      //   for (let idx of lessonIndex as number[]) {
+      //     timetable[dayIndex][idx].subject.push(subject);
+      //   }
+      // };
+      // const deletePeriods = ({lessonIndex, dayIndex, subject}: PeriodProps) => {
+      //   for (let idx of lessonIndex as number[]) {
+      //     let subjectIndex = 0;
+      //     while (subjectIndex > -1) {
+      //       subjectIndex = timetable[dayIndex][idx].subject
+      //         .slice(subjectIndex)
+      //         .findIndex((s: Subject) => s.name === subject.name);
 
-            timetable[dayIndex][idx].subject.pop(subjectIndex);
-          }
-        }
-      };
+      //       timetable[dayIndex][idx].subject.pop(subjectIndex);
+      //     }
+      //   }
+      // };
 
       timetable = filter(timetable, groups);
-
-      const compact = (timetable: Timetable): Timetable => {
-        return timetable.map(day => {
-          const compacted: Lesson[] = [];
-          let i = 0;
-          while (i < day.length) {
-            const lesson = day[i];
-            if (lesson.subject) {
-              let j = i + 1;
-              while (
-                j < day.length &&
-                //@ts-expect-error
-                day[j]?.subject?.name === lesson.subject.name &&
-                //@ts-expect-error
-                day[j]?.subject?.type === lesson.subject.type &&
-                j - i < 3
-              ) {
-                j++;
-              }
-              compacted.push({
-                time: {
-                  start: lesson.time.start,
-                  end: day[j - 1].time.end,
-                },
-                subject: lesson.subject,
-              });
-              i = j;
-            } else {
-              compacted.push(lesson);
-              i++;
-            }
-          }
-          return compacted.filter(lesson => lesson.subject);
-        });
-      };
-
-      const res = do_compact ? compact(timetable) : timetable;
       // console.log(res);
-      return res;
+      return timetable
     })
     .catch(err => err && console.error(err, 'parseTimetable'));
 };
@@ -294,24 +293,24 @@ export const parseCourses = async (): Promise<courseProps[]> => {
     });
 };
 
-export const parseCourseName = async (course: number): Promise<courseProps> => {
-  return await fetch(`${WM_URL}/plany/o${course}.html`)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Network response was not ok.');
-      }
-      return res.text();
-    })
-    .then(html => {
-      const doc = new parser().parseFromString(
-        html.replace(/(\r\n|\n|\r)/gm, ''),
-        'text/html',
-      );
+// export const parseCourseName = async (course: number): Promise<courseProps> => {
+//   return await fetch(`${WM_URL}/plany/o${course}.html`)
+//     .then(res => {
+//       if (!res.ok) {
+//         throw new Error('Network response was not ok.');
+//       }
+//       return res.text();
+//     })
+//     .then(html => {
+//       const doc = new parser().parseFromString(
+//         html.replace(/(\r\n|\n|\r)/gm, ''),
+//         'text/html',
+//       );
 
-      return {
-        label: doc.getElementsByAttribute('class', 'tytulnapis')[0].firstChild
-          .nodeValue,
-        value: course,
-      };
-    });
-};
+//       return {
+//         label: doc.getElementsByAttribute('class', 'tytulnapis')[0].firstChild
+//           .nodeValue,
+//         value: course,
+//       };
+//     });
+// };
